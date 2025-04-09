@@ -9,27 +9,31 @@ const pool = new Pool({
   port: process.env.DB_PORT,
 });
 
-// Initialize database tables
 const initDB = async () => {
   try {
     await pool.query(`
       CREATE TABLE IF NOT EXISTS users (
-        username VARCHAR(50) PRIMARY KEY,
-        email VARCHAR(100) UNIQUE NOT NULL,
+        id SERIAL PRIMARY KEY,
+        username VARCHAR(50) NOT NULL UNIQUE, 
+        email VARCHAR(100) NOT NULL UNIQUE,
         password VARCHAR(100) NOT NULL
-      );
+      )
+    `);
 
+    await pool.query(`
       CREATE TABLE IF NOT EXISTS tasks (
         id SERIAL PRIMARY KEY,
-        title VARCHAR(100) NOT NULL,
-        description TEXT,
-        username VARCHAR(50) REFERENCES users(username) ON DELETE CASCADE
-      );
+        username VARCHAR(50) REFERENCES users(username) ON DELETE CASCADE,
+        title VARCHAR(255) NOT NULL,
+        description TEXT
+      )
     `);
-    console.log('Database initialized successfully');
-  } catch (error) {
-    console.error('Database initialization error:', error);
+
+    console.log("✅ Tables created successfully!");
+  } catch (err) {
+    console.error("❌ Database initialization error:", err);
   }
 };
 
+module.exports = initDB;
 module.exports = { pool, initDB };

@@ -7,19 +7,20 @@ const getUserByUsername = async (username) => {
 };
 
 const getUserByUsernameOrEmail = async (username, email) => {
-  const result = await pool.query(
-    'SELECT * FROM users WHERE username = $1 OR email = $2',
-    [username, email]
-  );
-  return result.rows[0];
-};
+    const result = await pool.query(
+      `SELECT * FROM public.users WHERE username = $1 OR email = $2`, 
+      [username, email]
+    );
+    console.log("Received data:", username, email);
+    return result.rows[0];  // Or handle the result as needed
+  };
 
 const createUser = async (email, username, password) => {
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
   
   await pool.query(
-    'INSERT INTO users (email, username, password) VALUES ($1, $2, $3)',
+    `INSERT INTO users (email, username, password) VALUES ($1, $2, $3)`,
     [email, username, hashedPassword]
   );
 };
