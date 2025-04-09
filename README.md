@@ -60,4 +60,4 @@ This is a **Node.js-based backend application** that handles user authentication
 - The `taskController.js` handles CRUD operations for tasks. Users can add, update, or delete tasks, and the routes for these actions are defined in `taskRoutes.js`.
 
 ### **Database:**
-- All data related to users and tasks are stored in a PostgreSQL database,
+- All data related to users and tasks are stored in a PostgreSQL database, and .env is also provided with the real data
